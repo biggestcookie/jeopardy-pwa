@@ -1,3 +1,9 @@
+<script lang="ts" setup>
+import { defineProps } from "vue";
+
+const props = defineProps<{ name: string }>();
+</script>
+
 <template>
   <div id="container">
     <strong>{{ props.name }}</strong>
@@ -12,12 +18,6 @@
     </p>
   </div>
 </template>
-
-<script lang="ts" setup>
-import { defineProps } from "vue";
-
-const props = defineProps<{ name: string }>();
-</script>
 
 <style scoped>
 #container {

@@ -1,3 +1,16 @@
+<script lang="ts" setup>
+import {
+  IonIcon,
+  IonLabel,
+  IonPage,
+  IonRouterOutlet,
+  IonTabBar,
+  IonTabButton,
+  IonTabs,
+} from "@ionic/vue";
+import { triangle } from "ionicons/icons";
+</script>
+
 <template>
   <ion-page>
     <ion-tabs>
@@ -11,16 +24,3 @@
     </ion-tabs>
   </ion-page>
 </template>
-
-<script lang="ts" setup>
-import {
-  IonIcon,
-  IonLabel,
-  IonPage,
-  IonRouterOutlet,
-  IonTabBar,
-  IonTabButton,
-  IonTabs,
-} from "@ionic/vue";
-import { triangle } from "ionicons/icons";
-</script>

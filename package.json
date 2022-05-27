@@ -1,5 +1,5 @@
 {
-  "name": "ionic-vue-vite",
+  "name": "j-episodes",
   "version": "1.0.0",
   "private": true,
   "scripts": {
@@ -23,8 +23,8 @@
     "cordova-sqlite-storage": "^6.0.0",
     "localforage-cordovasqlitedriver": "^1.8.0",
     "pinia": "^2.0.14",
-    "vue": "^3.2.35",
-    "vue-router": "^4.0.15"
+    "vue": "^3.2.21",
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
     "@capacitor/cli": "3.5.1",
@@ -89,6 +89,7 @@
       ],
       "@typescript-eslint/ban-types": "off",
       "vue/no-deprecated-slot-attribute": "off",
+      "vue/multi-word-component-names": "off",
       "no-console": "warn",
       "no-debugger": "warn"
     },

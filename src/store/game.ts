@@ -1,7 +1,15 @@
 import { defineStore } from "pinia";
+import { Season } from "../types/season.model";
 
-export const useStore = defineStore("game", {
+export const useGameStore = defineStore("game", {
   state: () => ({
-    username: null as string | null,
+    seasonData: null as Season | null,
   }),
+  actions: {
+    async loadSeasonData(season: number) {
+      this.seasonData = (
+        await import(`../assets/json/season${season}.json`)
+      ).default;
+    },
+  },
 });

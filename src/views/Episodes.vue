@@ -15,25 +15,26 @@ import {
   IonToolbar,
   onIonViewWillEnter,
 } from "@ionic/vue";
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Heading from "../components/Heading.vue";
 import SortButton from "../components/SortButton.vue";
 import { useGameStore } from "../store/game";
 import { useLoadingStore } from "../store/loading";
+import { useUserStore } from "../store/user";
 import { Season } from "../types/season.model";
 
 const loadingStore = useLoadingStore();
 const gameStore = useGameStore();
+const userStore = useUserStore();
 const router = useRouter();
 const route = useRoute();
 
 type IndexAndEpisode = [index: number, episodeDate: Date];
 const seasons: IndexAndEpisode[] = reactive([]);
-const isDescending = ref(false);
 
 const onSetDescending = (value: boolean) => {
-  isDescending.value = value;
+  userStore.setAndStore("episodesDesc", value);
   seasons.reverse();
 };
 
@@ -46,6 +47,9 @@ onIonViewWillEnter(() => {
           [index + 1, new Date(episodeDate)] as IndexAndEpisode
       )
     );
+    if (userStore.episodesDesc) {
+      seasons.reverse();
+    }
     loadingStore.loading = false;
   });
 });
@@ -65,7 +69,7 @@ onIonViewWillEnter(() => {
           </ion-breadcrumbs>
         </ion-buttons>
         <sort-button
-          :is-descending="isDescending"
+          :is-descending="userStore.episodesDesc"
           @set-descending="onSetDescending"
         ></sort-button>
       </ion-toolbar>
@@ -77,7 +81,10 @@ onIonViewWillEnter(() => {
             size="12"
             size-sm
           >
-            <ion-card>
+            <ion-card
+              button
+              :router-link="`/season/${route.params.season}/episode/${episode[0]}`"
+            >
               <ion-card-header>
                 <ion-card-title> Episode {{ episode[0] }} </ion-card-title>
                 <ion-card-subtitle>

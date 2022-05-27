@@ -17,18 +17,20 @@ import {
 import { ref } from "vue";
 import Heading from "../components/Heading.vue";
 import SortButton from "../components/SortButton.vue";
+import { useUserStore } from "../store/user";
 import { useLoading } from "../use/useLoading";
 
 useLoading();
+const userStore = useUserStore();
 
 const totalSeasons = 37;
 const seasonIndices = ref(
-  Array.from({ length: totalSeasons }, (_, i) => totalSeasons - i)
+  Array.from({ length: totalSeasons }, (_, i) =>
+    userStore.seasonsDesc ? totalSeasons - i : i + 1
+  )
 );
-const isDescending = ref(true);
-
 const onSetDescending = (value: boolean) => {
-  isDescending.value = value;
+  userStore.setAndStore("seasonsDesc", value);
   seasonIndices.value = seasonIndices.value.reverse();
 };
 </script>
@@ -44,7 +46,7 @@ const onSetDescending = (value: boolean) => {
           </ion-breadcrumbs>
         </ion-buttons>
         <sort-button
-          :is-descending="isDescending"
+          :is-descending="userStore.seasonsDesc"
           @set-descending="onSetDescending"
         ></sort-button>
       </ion-toolbar>

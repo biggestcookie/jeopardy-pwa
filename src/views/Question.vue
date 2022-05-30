@@ -86,7 +86,13 @@ function loadQuestion() {
             >
               Rounds
             </ion-breadcrumb>
-            <ion-breadcrumb active> Categories </ion-breadcrumb>
+            <ion-breadcrumb
+              v-if="route.params.round !== '3'"
+              :router-link="`/season/${route.params.season}/episode/${route.params.episodeNumber}/round/${route.params.round}`"
+            >
+              Categories
+            </ion-breadcrumb>
+            <ion-breadcrumb active> Question </ion-breadcrumb>
           </ion-breadcrumbs>
         </ion-buttons>
       </ion-toolbar>

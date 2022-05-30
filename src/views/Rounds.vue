@@ -76,16 +76,26 @@ function loadRoundsList() {
       <ion-grid fixed>
         <ion-row v-for="(_, key) in rounds" :key="key">
           <ion-col>
-            <ion-card
-              button
-              :router-link="`/season/${route.params.season}/episode/${route.params.episodeNumber}/round/${key}`"
-            >
-              <ion-card-header>
-                <ion-card-title>{{
-                  key === "3" ? "Final Jeopardy" : `Round ${key}`
-                }}</ion-card-title>
-              </ion-card-header>
-            </ion-card>
+            <template v-if="key !== '3'">
+              <ion-card
+                button
+                :router-link="`/season/${route.params.season}/episode/${route.params.episodeNumber}/round/${key}`"
+              >
+                <ion-card-header>
+                  <ion-card-title> Round {{ key }} </ion-card-title>
+                </ion-card-header>
+              </ion-card>
+            </template>
+            <template v-else>
+              <ion-card
+                button
+                :router-link="`/season/${route.params.season}/episode/${route.params.episodeNumber}/round/${key}/category/1/question/1`"
+              >
+                <ion-card-header>
+                  <ion-card-title> Final Jeopardy </ion-card-title>
+                </ion-card-header>
+              </ion-card>
+            </template>
           </ion-col>
         </ion-row>
       </ion-grid>

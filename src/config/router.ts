@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
-import Episode from "../views/Episode.vue";
-import Home from "../views/Home.vue";
+import Categories from "../views/Categories.vue";
+import Episodes from "../views/Episodes.vue";
 import Question from "../views/Question.vue";
-import Round from "../views/Round.vue";
-import Season from "../views/Season.vue";
+import Rounds from "../views/Rounds.vue";
+import Seasons from "../views/Seasons.vue";
 
 const routes: Array<RouteRecordRaw> = [
   // {
@@ -13,26 +13,19 @@ const routes: Array<RouteRecordRaw> = [
   // },
   {
     path: "/",
-    component: Home,
-    meta: {
-      title: "Jeopardy!",
-    },
+    component: Seasons,
   },
   {
     path: "/season/:season",
-    component: Season,
+    component: Episodes,
   },
   {
     path: "/season/:season/episode/:episodeNumber",
-    component: Episode,
+    component: Rounds,
   },
   {
     path: "/season/:season/episode/:episodeNumber/round/:round",
-    component: Round,
-  },
-  {
-    path: "/season/:season/episode/:episodeNumber/round/:round",
-    component: Round,
+    component: Categories,
   },
   {
     path: "/season/:season/episode/:episodeNumber/round/:round/category/:categoryNumber/question/:questionNumber",

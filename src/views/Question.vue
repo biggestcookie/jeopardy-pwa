@@ -3,6 +3,10 @@ import {
   IonBreadcrumb,
   IonBreadcrumbs,
   IonButtons,
+  IonCard,
+  IonCardHeader,
+  IonCardSubtitle,
+  IonCardTitle,
   IonContent,
   IonPage,
   IonToolbar,
@@ -21,6 +25,7 @@ const route = useRoute();
 const gameStore = useGameStore();
 const loadingStore = useLoadingStore();
 
+const category: Ref<string> = ref("");
 const question: Ref<Question | null> = ref(null);
 
 gameStore.$subscribe(() => {
@@ -37,14 +42,14 @@ function loadQuestion() {
       Number(route.params.episodeNumber) - 1
     ];
 
-    const category = Object.keys(
+    category.value = Object.keys(
       gameStore.seasonData[episodeDate][route.params.round as string]
     )[Number(route.params.categoryNumber) - 1];
 
     question.value =
-      gameStore.seasonData[episodeDate][route.params.round as string][category][
-        Number(route.params.questionNumber) - 1
-      ];
+      gameStore.seasonData[episodeDate][route.params.round as string][
+        category.value
+      ][Number(route.params.questionNumber) - 1];
 
     loadingStore.loading = false;
   }
@@ -85,6 +90,16 @@ function loadQuestion() {
           </ion-breadcrumbs>
         </ion-buttons>
       </ion-toolbar>
+      <ion-card class="ion-padding">
+        <ion-card-header>
+          <ion-card-subtitle>
+            <h5>{{ category }}</h5>
+          </ion-card-subtitle>
+          <ion-card-title class="ion-text-justify">
+            {{ question?.answer }}
+          </ion-card-title>
+        </ion-card-header>
+      </ion-card>
     </ion-content>
   </ion-page>
 </template>

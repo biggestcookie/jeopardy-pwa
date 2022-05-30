@@ -13,31 +13,32 @@ import {
   IonPage,
   IonRow,
   IonToolbar,
+  onIonViewWillEnter,
 } from "@ionic/vue";
-import { ref } from "vue";
 import Heading from "../components/Heading.vue";
 import SortButton from "../components/SortButton.vue";
+import { useLoadingStore } from "../store/loading";
 import { useUserStore } from "../store/user";
-import { useLoading } from "../use/useLoading";
 
-useLoading();
 const userStore = useUserStore();
+const loadingStore = useLoadingStore();
 
 const totalSeasons = 37;
-const seasonIndices = ref(
-  Array.from({ length: totalSeasons }, (_, i) =>
-    userStore.seasonsDesc ? totalSeasons - i : i + 1
-  )
-);
+const seasonIndices = Array.from({ length: totalSeasons }, (_, i) => i + 1);
+
 const onSetDescending = (value: boolean) => {
   userStore.setAndStore("seasonsDesc", value);
-  seasonIndices.value = seasonIndices.value.reverse();
+  // userStore.seasonsDesc = value;
 };
+
+onIonViewWillEnter(() => {
+  loadingStore.loading = false;
+});
 </script>
 
 <template>
   <ion-page class="ion-page" id="main-content">
-    <heading>Jeopardy</heading>
+    <heading>Jeopardy!</heading>
     <ion-content class="ion-padding">
       <ion-toolbar>
         <ion-buttons slot="start">
@@ -52,8 +53,13 @@ const onSetDescending = (value: boolean) => {
       </ion-toolbar>
       <ion-grid fixed>
         <ion-row>
-          <ion-col v-for="index in seasonIndices" :key="index">
-            <ion-card button :router-link="`/season/${index}/episode`">
+          <ion-col
+            v-for="index in !userStore.seasonsDesc
+              ? seasonIndices
+              : seasonIndices.slice().reverse()"
+            :key="`${userStore.seasonsDesc}` + index"
+          >
+            <ion-card button :router-link="`/season/${index}`">
               <ion-card-header>
                 <ion-card-title>Season {{ index }}</ion-card-title>
                 <ion-card-subtitle>

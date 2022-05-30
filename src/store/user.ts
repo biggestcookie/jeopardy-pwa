@@ -9,18 +9,21 @@ export const useUserStore = defineStore("user", {
   }),
   actions: {
     async initializeFromStorage() {
-      this.seasonsDesc = await getOrInitFromStorage(
-        "seasonsDesc",
-        this.seasonsDesc
-      );
-
-      this.episodesDesc = await getOrInitFromStorage(
-        "episodesDesc",
-        this.episodesDesc
-      );
+      this.$patch({
+        seasonsDesc: await getOrInitFromStorage(
+          "seasonsDesc",
+          this.seasonsDesc
+        ),
+        episodesDesc: await getOrInitFromStorage(
+          "episodesDesc",
+          this.episodesDesc
+        ),
+      });
     },
     async setAndStore<T>(key: string, value: T) {
-      (this as any)[key] = value;
+      this.$patch({
+        [key]: value,
+      });
       Storage.set({
         key,
         value: typeof value === "string" ? value : JSON.stringify(value),

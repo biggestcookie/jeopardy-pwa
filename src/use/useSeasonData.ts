@@ -1,19 +1,17 @@
 import { onIonViewWillEnter } from "@ionic/vue";
-import { Ref, ref } from "vue";
 import { useRoute } from "vue-router";
-import { Season } from "../types/season.model";
+import { useGameStore } from "../store/game";
+import { useLoadingStore } from "../store/loading";
 
 export function useSeasonData() {
-  const episodes: Ref<Season | null> = ref(null);
+  const route = useRoute();
+  const gameStore = useGameStore();
+  const loadingStore = useLoadingStore();
 
   onIonViewWillEnter(async () => {
-    const route = useRoute();
-    const data = (
-      await import(`../assets/json/season${route.params.season}.json`)
-    ).default;
-
-    episodes.value = data;
+    if (route.params?.season) {
+      loadingStore.loading = true;
+      await gameStore.loadSeasonData(Number(route.params.season));
+    }
   });
-
-  return { episodes };
 }

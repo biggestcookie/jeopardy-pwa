@@ -1,26 +1,42 @@
 import { createRouter, createWebHistory } from "@ionic/vue-router";
 import { RouteRecordRaw } from "vue-router";
-import Episodes from "../views/Episodes.vue";
-import Seasons from "../views/Seasons.vue";
+import Episode from "../views/Episode.vue";
+import Home from "../views/Home.vue";
+import Question from "../views/Question.vue";
+import Round from "../views/Round.vue";
+import Season from "../views/Season.vue";
 
 const routes: Array<RouteRecordRaw> = [
+  // {
+  //   path: "/",
+  //   redirect: "/season",
+  // },
   {
     path: "/",
-    redirect: "/season",
-  },
-  {
-    path: "/season",
-    component: Seasons,
+    component: Home,
     meta: {
-      title: "Seasons",
+      title: "Jeopardy!",
     },
   },
   {
-    path: "/season/:season/episode",
-    component: Episodes,
-    meta: {
-      title: "Episodes",
-    },
+    path: "/season/:season",
+    component: Season,
+  },
+  {
+    path: "/season/:season/episode/:episodeNumber",
+    component: Episode,
+  },
+  {
+    path: "/season/:season/episode/:episodeNumber/round/:round",
+    component: Round,
+  },
+  {
+    path: "/season/:season/episode/:episodeNumber/round/:round",
+    component: Round,
+  },
+  {
+    path: "/season/:season/episode/:episodeNumber/round/:round/category/:categoryNumber/question/:questionNumber",
+    component: Question,
   },
 ];
 
@@ -33,9 +49,9 @@ const router = createRouter({
   //     : { top: 0, left: 0, behavior: "smooth" },
 });
 
-router.beforeEach((to, _, next) => {
-  document.title = `${to.meta.title ? to.meta.title + " - " : ""}Jeopardy App`;
-  next();
-});
+// router.beforeEach((to, _, next) => {
+//   document.title = `${to.meta.title ? to.meta.title + " - " : ""}Jeopardy App`;
+//   next();
+// });
 
 export { router };

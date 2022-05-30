@@ -1,0 +1,90 @@
+<script lang="ts" setup>
+import {
+  IonBreadcrumb,
+  IonBreadcrumbs,
+  IonButtons,
+  IonContent,
+  IonPage,
+  IonToolbar,
+  onIonViewWillEnter,
+} from "@ionic/vue";
+import { Ref, ref } from "vue";
+import { useRoute } from "vue-router";
+import Heading from "../components/Heading.vue";
+import { Question } from "../models/season.model";
+import { useGameStore } from "../store/game";
+import { useLoadingStore } from "../store/loading";
+// import { useSeasonData } from "../use/useSeasonData";
+
+// useSeasonData();
+const route = useRoute();
+const gameStore = useGameStore();
+const loadingStore = useLoadingStore();
+
+const question: Ref<Question | null> = ref(null);
+
+gameStore.$subscribe(() => {
+  loadQuestion();
+});
+
+onIonViewWillEnter(() => {
+  loadQuestion();
+});
+
+function loadQuestion() {
+  if (Object.keys(gameStore.seasonData)?.length) {
+    const episodeDate = Object.keys(gameStore.seasonData)[
+      Number(route.params.episodeNumber) - 1
+    ];
+
+    const category = Object.keys(
+      gameStore.seasonData[episodeDate][route.params.round as string]
+    )[Number(route.params.categoryNumber) - 1];
+
+    question.value =
+      gameStore.seasonData[episodeDate][route.params.round as string][category][
+        Number(route.params.questionNumber) - 1
+      ];
+
+    loadingStore.loading = false;
+  }
+}
+</script>
+
+<template>
+  <ion-page class="ion-page" id="main-content">
+    <heading
+      >Season {{ route.params.season }}, Episode
+      {{ route.params.episodeNumber }} -
+      {{
+        route.params.round === "3"
+          ? "Final Jeopardy"
+          : `Round ${route.params.round}`
+      }}</heading
+    >
+    <ion-content class="ion-padding">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-breadcrumbs>
+            <ion-breadcrumb :router-link="`/`" router-direction="back">
+              Seasons
+            </ion-breadcrumb>
+            <ion-breadcrumb
+              :router-link="`/season/${route.params.season}`"
+              router-direction="back"
+            >
+              Episodes
+            </ion-breadcrumb>
+            <ion-breadcrumb
+              :router-link="`/season/${route.params.season}/episode/${route.params.episodeNumber}`"
+              router-direction="back"
+            >
+              Rounds
+            </ion-breadcrumb>
+            <ion-breadcrumb active> Categories </ion-breadcrumb>
+          </ion-breadcrumbs>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-content>
+  </ion-page>
+</template>

@@ -15,44 +15,46 @@ import {
   IonToolbar,
   onIonViewWillEnter,
 } from "@ionic/vue";
-import { reactive } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { Ref, ref } from "vue";
+import { useRoute } from "vue-router";
 import Heading from "../components/Heading.vue";
 import SortButton from "../components/SortButton.vue";
 import { useGameStore } from "../store/game";
 import { useLoadingStore } from "../store/loading";
 import { useUserStore } from "../store/user";
-import { Season } from "../types/season.model";
+// import { useSeasonData } from "../use/useSeasonData";
 
+// useSeasonData();
 const loadingStore = useLoadingStore();
 const gameStore = useGameStore();
 const userStore = useUserStore();
-const router = useRouter();
 const route = useRoute();
 
 type IndexAndEpisode = [index: number, episodeDate: Date];
-const seasons: IndexAndEpisode[] = reactive([]);
+const seasons: Ref<IndexAndEpisode[]> = ref([]);
 
 const onSetDescending = (value: boolean) => {
   userStore.setAndStore("episodesDesc", value);
-  seasons.reverse();
+  // userStore.episodesDesc = value;
 };
 
-onIonViewWillEnter(() => {
+onIonViewWillEnter(async () => {
   loadingStore.loading = true;
   gameStore.loadSeasonData(Number(route.params.season)).then(() => {
-    seasons.push(
-      ...Object.keys(gameStore.seasonData as Season).map(
-        (episodeDate, index) =>
-          [index + 1, new Date(episodeDate)] as IndexAndEpisode
-      )
-    );
-    if (userStore.episodesDesc) {
-      seasons.reverse();
-    }
-    loadingStore.loading = false;
+    loadSeasonList();
   });
 });
+
+function loadSeasonList() {
+  const seasonKeys = Object.keys(gameStore.seasonData);
+  if (seasonKeys?.length) {
+    seasons.value = seasonKeys.map(
+      (episodeDate, index) =>
+        [index + 1, new Date(episodeDate)] as IndexAndEpisode
+    );
+    loadingStore.loading = false;
+  }
+}
 </script>
 
 <template>
@@ -62,7 +64,7 @@ onIonViewWillEnter(() => {
       <ion-toolbar>
         <ion-buttons slot="start">
           <ion-breadcrumbs>
-            <ion-breadcrumb @click="router.back()" router-direction="back">
+            <ion-breadcrumb router-link="/" router-direction="back">
               Seasons
             </ion-breadcrumb>
             <ion-breadcrumb active>Episodes</ion-breadcrumb>
@@ -73,11 +75,13 @@ onIonViewWillEnter(() => {
           @set-descending="onSetDescending"
         ></sort-button>
       </ion-toolbar>
-      <ion-grid>
+      <ion-grid fixed>
         <ion-row>
           <ion-col
-            v-for="episode in seasons"
-            :key="episode[0]"
+            v-for="episode in !userStore.episodesDesc
+              ? seasons
+              : seasons.slice().reverse()"
+            :key="`${userStore.episodesDesc}${episode[0]}`"
             size="12"
             size-sm
           >

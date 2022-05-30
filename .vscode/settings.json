@@ -19,5 +19,6 @@
     "**/dist": true,
     "**/node_modules": true
   },
-  "typescript.preferences.importModuleSpecifier": "relative"
+  "typescript.preferences.importModuleSpecifier": "relative",
+  "html-css-class-completion.includeGlobPattern": "node_modules/@ionic/core/css/**/*.css"
 }

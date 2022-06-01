@@ -4,4 +4,10 @@ import { defineConfig } from "vite";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  json: {
+    stringify: false,
+  },
+  optimizeDeps: {
+    entries: ["!**/json"],
+  },
 });

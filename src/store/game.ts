@@ -9,6 +9,8 @@ import { Season } from "../models/season.model";
 //   questionNumber?: number;
 // }
 
+const jsonModules = import.meta.glob(`/public/json/*.json`);
+
 export const useGameStore = defineStore("game", {
   state: () => ({
     seasonData: {} as Season,
@@ -17,7 +19,7 @@ export const useGameStore = defineStore("game", {
   actions: {
     async loadSeasonData(season: number) {
       this.seasonData = (
-        await import(`../assets/json/season${season}.json`)
+        await jsonModules[`/public/json/season${season}.json`]()
       ).default;
     },
   },

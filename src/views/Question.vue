@@ -2,13 +2,17 @@
 import {
   IonBreadcrumb,
   IonBreadcrumbs,
+  IonButton,
   IonButtons,
   IonCard,
   IonCardHeader,
   IonCardSubtitle,
   IonCardTitle,
+  IonCol,
   IonContent,
+  IonGrid,
   IonPage,
+  IonRow,
   IonToolbar,
   onIonViewWillEnter,
 } from "@ionic/vue";
@@ -96,16 +100,27 @@ function loadQuestion() {
           </ion-breadcrumbs>
         </ion-buttons>
       </ion-toolbar>
-      <ion-card class="ion-padding">
-        <ion-card-header>
-          <ion-card-subtitle>
-            <h5>{{ category }}</h5>
-          </ion-card-subtitle>
-          <ion-card-title class="ion-text-justify">
-            {{ question?.answer }}
-          </ion-card-title>
-        </ion-card-header>
-      </ion-card>
+      <ion-grid fixed>
+        <ion-row>
+          <ion-col>
+            <ion-card class="ion-padding">
+              <ion-card-header>
+                <ion-card-subtitle>
+                  <h5>{{ category }}</h5>
+                </ion-card-subtitle>
+                <ion-card-title class="ion-text-justify">
+                  {{ question?.answer }}
+                </ion-card-title>
+              </ion-card-header>
+            </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-button expand="block">Show answer</ion-button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-content>
   </ion-page>
 </template>

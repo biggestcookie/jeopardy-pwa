@@ -36,3 +36,12 @@ onMounted(async () => {
     <!-- </template> -->
   </ion-app>
 </template>
+
+<style lang="scss">
+ion-breadcrumb {
+  cursor: pointer;
+  &.breadcrumb-active {
+    cursor: default;
+  }
+}
+</style>

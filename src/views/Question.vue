@@ -10,14 +10,18 @@ import {
   IonCardTitle,
   IonCol,
   IonContent,
+  IonFab,
+  IonFabButton,
   IonGrid,
+  IonIcon,
   IonPage,
   IonRow,
   IonToolbar,
   onIonViewWillEnter,
 } from "@ionic/vue";
+import { arrowBack } from "ionicons/icons";
 import { Ref, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import Heading from "../components/Heading.vue";
 import { Question } from "../models/season.model";
 import { useGameStore } from "../store/game";
@@ -26,10 +30,12 @@ import { useLoadingStore } from "../store/loading";
 
 // useSeasonData();
 const route = useRoute();
+const router = useRouter();
 const gameStore = useGameStore();
 const loadingStore = useLoadingStore();
 
-const category: Ref<string> = ref("");
+const category = ref("");
+const showAnswer = ref(false);
 const question: Ref<Question | null> = ref(null);
 
 gameStore.$subscribe(() => {
@@ -71,6 +77,11 @@ function loadQuestion() {
           : `Round ${route.params.round}`
       }}</heading
     >
+    <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+      <ion-fab-button @click="router.back()">
+        <ion-icon :icon="arrowBack" />
+      </ion-fab-button>
+    </ion-fab>
     <ion-content class="ion-padding">
       <ion-toolbar>
         <ion-buttons slot="start">
@@ -117,7 +128,11 @@ function loadQuestion() {
         </ion-row>
         <ion-row>
           <ion-col>
-            <ion-button expand="block">Show answer</ion-button>
+            <ion-button expand="block" @click="showAnswer = !showAnswer">
+              {{
+                showAnswer ? `What is ${question?.question}?` : "Show answer"
+              }}
+            </ion-button>
           </ion-col>
         </ion-row>
       </ion-grid>

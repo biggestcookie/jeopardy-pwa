@@ -12,7 +12,7 @@ import {
   <ion-header>
     <ion-toolbar>
       <ion-buttons slot="start">
-        <ion-back-button></ion-back-button>
+        <ion-back-button />
       </ion-buttons>
       <ion-title router-link="/">
         <slot></slot>
